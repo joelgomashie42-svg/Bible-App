@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bible App</title>
+
+    <meta name="theme-color" content="#172554">
+
+    <link rel="manifest" href="manifest.json">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #172033;
+        }
+
+        header {
+            background: linear-gradient(135deg, #172554, #2563eb);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            margin-bottom: 10px;
+            color: #172554;
+        }
+
+        .version-select {
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid #d1d5db;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        button {
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .verse {
+            line-height: 1.8;
+            font-size: 18px;
+            margin-top: 15px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #6b7280;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>📖 Bible App</h1>
+        <p>Grow in Grace & Truth</p>
+    </header>
+
+    <main class="container">
+
+        <section class="card">
+            <h2>Choose Bible Version</h2>
+
+            <select class="version-select">
+                <option>KJV — King James Version</option>
+                <option>WEB — World English Bible</option>
+                <option>ASV — American Standard Version</option>
+            </select>
+        </section>
+
+        <section class="card">
+            <h2>Welcome</h2>
+
+            <p>
+                Welcome to your Bible app. Choose a Bible version,
+                explore the Scriptures, search for verses, and grow
+                in God's Word.
+            </p>
+
+            <div class="buttons">
+                <button>📖 Read Bible</button>
+                <button>🔎 Search</button>
+                <button>⭐ Bookmarks</button>
+                <button>⚙️ Settings</button>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Verse of the Day</h2>
+
+            <p class="verse">
+                "Thy word is a lamp unto my feet, and a light unto my path."
+            </p>
+
+            <p style="margin-top: 10px;">
+                — Psalm 119:105
+            </p>
+        </section>
+
+    </main>
+
+    <footer>
+        Bible App • Grow in Grace & Truth
+    </footer>
+
+</body>
+</html>
