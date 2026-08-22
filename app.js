@@ -2,7 +2,13 @@
 // BIBLE APP - MAIN JAVASCRIPT
 // ==========================================
 
-// Bible versions we currently support
+const API_BASE = "https://api.midvash.com/v1";
+
+
+// ==========================================
+// BIBLE VERSIONS
+// ==========================================
+
 const BIBLE_VERSIONS = {
     kjv: {
         name: "King James Version",
@@ -17,17 +23,26 @@ const BIBLE_VERSIONS = {
     web: {
         name: "World English Bible",
         shortName: "WEB"
+    },
+
+    geneva1599: {
+        name: "Geneva Bible 1599",
+        shortName: "Geneva 1599"
+    },
+
+    dra: {
+        name: "Douay-Rheims American Edition",
+        shortName: "DRA"
     }
 };
 
 
 // ==========================================
-// 66 BOOKS OF THE BIBLE
+// 66 BOOKS
 // ==========================================
 
 const BOOKS = [
 
-    // Old Testament
     { name: "Genesis", id: "genesis", chapters: 50, testament: "OT" },
     { name: "Exodus", id: "exodus", chapters: 40, testament: "OT" },
     { name: "Leviticus", id: "leviticus", chapters: 27, testament: "OT" },
@@ -49,7 +64,7 @@ const BOOKS = [
     { name: "Psalms", id: "psalms", chapters: 150, testament: "OT" },
     { name: "Proverbs", id: "proverbs", chapters: 31, testament: "OT" },
     { name: "Ecclesiastes", id: "ecclesiastes", chapters: 12, testament: "OT" },
-    { name: "Song of Solomon", id: "song-of-solomon", chapters: 8, testament: "OT" },
+    { name: "Song of Solomon", id: "song", chapters: 8, testament: "OT" },
     { name: "Isaiah", id: "isaiah", chapters: 66, testament: "OT" },
     { name: "Jeremiah", id: "jeremiah", chapters: 52, testament: "OT" },
     { name: "Lamentations", id: "lamentations", chapters: 5, testament: "OT" },
@@ -68,7 +83,6 @@ const BOOKS = [
     { name: "Zechariah", id: "zechariah", chapters: 14, testament: "OT" },
     { name: "Malachi", id: "malachi", chapters: 4, testament: "OT" },
 
-    // New Testament
     { name: "Matthew", id: "matthew", chapters: 28, testament: "NT" },
     { name: "Mark", id: "mark", chapters: 16, testament: "NT" },
     { name: "Luke", id: "luke", chapters: 24, testament: "NT" },
@@ -81,7 +95,7 @@ const BOOKS = [
     { name: "Ephesians", id: "ephesians", chapters: 6, testament: "NT" },
     { name: "Philippians", id: "philippians", chapters: 4, testament: "NT" },
     { name: "Colossians", id: "colossians", chapters: 4, testament: "NT" },
-    { name: "1 Thessalonians", id: "1-thessalonians", chapters: 5, testament: "NT" },
+    { name: "1 Thessalonians", id: "1-thessalonians", chapters: 5, testament: "OT" },
     { name: "2 Thessalonians", id: "2-thessalonians", chapters: 3, testament: "NT" },
     { name: "1 Timothy", id: "1-timothy", chapters: 6, testament: "NT" },
     { name: "2 Timothy", id: "2-timothy", chapters: 4, testament: "NT" },
@@ -109,7 +123,7 @@ let currentChapter = 1;
 
 
 // ==========================================
-// LOAD A BIBLE CHAPTER
+// LOAD CHAPTER
 // ==========================================
 
 async function loadChapter() {
@@ -128,7 +142,7 @@ async function loadChapter() {
     try {
 
         const url =
-            `https://cdn.jsdelivr.net/gh/jsubroto/bible-api/versions/${currentVersion}/books/${currentBook.id}/chapters/${currentChapter}.json`;
+            `${API_BASE}/${currentVersion}/${currentBook.id}/${currentChapter}`;
 
         const response = await fetch(url);
 
@@ -136,20 +150,26 @@ async function loadChapter() {
             throw new Error("Unable to load chapter");
         }
 
-        const data = await response.json();
+        const result = await response.json();
+
+        const data = result.data || result;
 
         displayChapter(data);
 
     } catch (error) {
 
-        console.error(error);
+        console.error("Bible API error:", error);
 
         reader.innerHTML = `
             <div class="error-message">
                 <h3>Unable to load Scripture</h3>
+
                 <p>
-                    Please check your internet connection and try again.
+                    We couldn't load this chapter.
+                    Please check your internet connection
+                    and try again.
                 </p>
+
                 <button onclick="loadChapter()">
                     Try Again
                 </button>
@@ -165,11 +185,13 @@ async function loadChapter() {
 
 function displayChapter(data) {
 
-    const reader = document.getElementById("reader");
+    const reader =
+        document.getElementById("reader");
 
     reader.innerHTML = "";
 
-    const title = document.createElement("div");
+    const title =
+        document.createElement("div");
 
     title.className = "chapter-title";
 
@@ -181,15 +203,31 @@ function displayChapter(data) {
     reader.appendChild(title);
 
 
+    if (!data || !data.verses) {
+
+        reader.innerHTML += `
+            <div class="error-message">
+                <h3>No verses found</h3>
+                <p>
+                    This chapter could not be displayed.
+                </p>
+            </div>
+        `;
+
+        return;
+    }
+
+
     data.verses.forEach(verse => {
 
-        const verseElement = document.createElement("div");
+        const verseElement =
+            document.createElement("div");
 
         verseElement.className = "verse-row";
 
         verseElement.innerHTML = `
             <span class="verse-number">
-                ${verse.verse}
+                ${verse.number}
             </span>
 
             <span class="verse-text">
@@ -200,33 +238,41 @@ function displayChapter(data) {
         reader.appendChild(verseElement);
     });
 
+
     updateNavigation();
 }
 
 
 // ==========================================
-// UPDATE BOOK AND CHAPTER SELECTORS
+// POPULATE BOOKS
 // ==========================================
 
 function populateBooks() {
 
-    const bookSelect = document.getElementById("bookSelect");
+    const bookSelect =
+        document.getElementById("bookSelect");
 
     if (!bookSelect) return;
 
     bookSelect.innerHTML = "";
 
-    const oldTestament = document.createElement("optgroup");
 
-    oldTestament.label = "Old Testament";
+    const oldTestament =
+        document.createElement("optgroup");
+
+    oldTestament.label =
+        "Old Testament";
+
 
     BOOKS
         .filter(book => book.testament === "OT")
         .forEach(book => {
 
-            const option = document.createElement("option");
+            const option =
+                document.createElement("option");
 
             option.value = book.id;
+
             option.textContent = book.name;
 
             if (book.id === currentBook.id) {
@@ -237,17 +283,22 @@ function populateBooks() {
         });
 
 
-    const newTestament = document.createElement("optgroup");
+    const newTestament =
+        document.createElement("optgroup");
 
-    newTestament.label = "New Testament";
+    newTestament.label =
+        "New Testament";
+
 
     BOOKS
         .filter(book => book.testament === "NT")
         .forEach(book => {
 
-            const option = document.createElement("option");
+            const option =
+                document.createElement("option");
 
             option.value = book.id;
+
             option.textContent = book.name;
 
             if (book.id === currentBook.id) {
@@ -259,11 +310,16 @@ function populateBooks() {
 
 
     bookSelect.appendChild(oldTestament);
+
     bookSelect.appendChild(newTestament);
 
     populateChapters();
 }
 
+
+// ==========================================
+// POPULATE CHAPTERS
+// ==========================================
 
 function populateChapters() {
 
@@ -274,12 +330,20 @@ function populateChapters() {
 
     chapterSelect.innerHTML = "";
 
-    for (let i = 1; i <= currentBook.chapters; i++) {
 
-        const option = document.createElement("option");
+    for (
+        let i = 1;
+        i <= currentBook.chapters;
+        i++
+    ) {
+
+        const option =
+            document.createElement("option");
 
         option.value = i;
-        option.textContent = `Chapter ${i}`;
+
+        option.textContent =
+            `Chapter ${i}`;
 
         if (i === currentChapter) {
             option.selected = true;
@@ -291,7 +355,7 @@ function populateChapters() {
 
 
 // ==========================================
-// VERSION SELECTOR
+// POPULATE VERSIONS
 // ==========================================
 
 function populateVersions() {
@@ -303,10 +367,12 @@ function populateVersions() {
 
     versionSelect.innerHTML = "";
 
+
     Object.entries(BIBLE_VERSIONS)
         .forEach(([id, version]) => {
 
-            const option = document.createElement("option");
+            const option =
+                document.createElement("option");
 
             option.value = id;
 
@@ -329,25 +395,41 @@ function populateVersions() {
 function updateNavigation() {
 
     const previousButton =
-        document.getElementById("previousChapter");
+        document.getElementById(
+            "previousChapter"
+        );
 
     const nextButton =
-        document.getElementById("nextChapter");
+        document.getElementById(
+            "nextChapter"
+        );
 
-    if (!previousButton || !nextButton) return;
+    if (!previousButton || !nextButton) {
+        return;
+    }
 
-    previousButton.disabled =
-        currentChapter === 1 &&
-        currentBook === BOOKS[0];
+
+    const firstBook =
+        BOOKS[0];
 
     const lastBook =
         BOOKS[BOOKS.length - 1];
 
+
+    previousButton.disabled =
+        currentBook === firstBook &&
+        currentChapter === 1;
+
+
     nextButton.disabled =
-        currentChapter === currentBook.chapters &&
-        currentBook === lastBook;
+        currentBook === lastBook &&
+        currentChapter === currentBook.chapters;
 }
 
+
+// ==========================================
+// PREVIOUS CHAPTER
+// ==========================================
 
 function previousChapter() {
 
@@ -362,7 +444,8 @@ function previousChapter() {
 
         if (index > 0) {
 
-            currentBook = BOOKS[index - 1];
+            currentBook =
+                BOOKS[index - 1];
 
             currentChapter =
                 currentBook.chapters;
@@ -370,13 +453,21 @@ function previousChapter() {
     }
 
     populateBooks();
+
     loadChapter();
 }
 
 
+// ==========================================
+// NEXT CHAPTER
+// ==========================================
+
 function nextChapter() {
 
-    if (currentChapter < currentBook.chapters) {
+    if (
+        currentChapter <
+        currentBook.chapters
+    ) {
 
         currentChapter++;
 
@@ -385,15 +476,20 @@ function nextChapter() {
         const index =
             BOOKS.indexOf(currentBook);
 
-        if (index < BOOKS.length - 1) {
+        if (
+            index <
+            BOOKS.length - 1
+        ) {
 
-            currentBook = BOOKS[index + 1];
+            currentBook =
+                BOOKS[index + 1];
 
             currentChapter = 1;
         }
     }
 
     populateBooks();
+
     loadChapter();
 }
 
@@ -402,61 +498,89 @@ function nextChapter() {
 // EVENT LISTENERS
 // ==========================================
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
 
-    populateVersions();
-    populateBooks();
+        populateVersions();
 
-    loadChapter();
+        populateBooks();
 
-
-    document
-        .getElementById("versionSelect")
-        ?.addEventListener("change", event => {
-
-            currentVersion = event.target.value;
-
-            loadChapter();
-        });
+        loadChapter();
 
 
-    document
-        .getElementById("bookSelect")
-        ?.addEventListener("change", event => {
+        document
+            .getElementById("versionSelect")
+            ?.addEventListener(
+                "change",
+                event => {
 
-            const selectedBook =
-                BOOKS.find(book =>
-                    book.id === event.target.value
-                );
+                    currentVersion =
+                        event.target.value;
 
-            if (!selectedBook) return;
-
-            currentBook = selectedBook;
-            currentChapter = 1;
-
-            populateChapters();
-            loadChapter();
-        });
+                    loadChapter();
+                }
+            );
 
 
-    document
-        .getElementById("chapterSelect")
-        ?.addEventListener("change", event => {
+        document
+            .getElementById("bookSelect")
+            ?.addEventListener(
+                "change",
+                event => {
 
-            currentChapter =
-                Number(event.target.value);
+                    const selectedBook =
+                        BOOKS.find(
+                            book =>
+                                book.id ===
+                                event.target.value
+                        );
 
-            loadChapter();
-        });
+                    if (!selectedBook) {
+                        return;
+                    }
+
+                    currentBook =
+                        selectedBook;
+
+                    currentChapter = 1;
+
+                    populateChapters();
+
+                    loadChapter();
+                }
+            );
 
 
-    document
-        .getElementById("previousChapter")
-        ?.addEventListener("click", previousChapter);
+        document
+            .getElementById("chapterSelect")
+            ?.addEventListener(
+                "change",
+                event => {
+
+                    currentChapter =
+                        Number(
+                            event.target.value
+                        );
+
+                    loadChapter();
+                }
+            );
 
 
-    document
-        .getElementById("nextChapter")
-        ?.addEventListener("click", nextChapter);
+        document
+            .getElementById("previousChapter")
+            ?.addEventListener(
+                "click",
+                previousChapter
+            );
 
-});
+
+        document
+            .getElementById("nextChapter")
+            ?.addEventListener(
+                "click",
+                nextChapter
+            );
+    }
+);
