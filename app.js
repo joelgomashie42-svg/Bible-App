@@ -1,8 +1,13 @@
 // ==========================================
-// BIBLE APP - MAIN JAVASCRIPT
+// BIBLE APP
 // ==========================================
 
-const API_BASE = "https://api.midvash.com/v1";
+// Bible data is loaded directly from the
+// official Midvash open Bible dataset.
+//
+// The dataset provides public-domain or
+// freely redistributable Bible texts.
+// ==========================================
 
 
 // ==========================================
@@ -10,6 +15,7 @@ const API_BASE = "https://api.midvash.com/v1";
 // ==========================================
 
 const BIBLE_VERSIONS = {
+
     kjv: {
         name: "King James Version",
         shortName: "KJV"
@@ -34,6 +40,7 @@ const BIBLE_VERSIONS = {
         name: "Douay-Rheims American Edition",
         shortName: "DRA"
     }
+
 };
 
 
@@ -43,83 +50,109 @@ const BIBLE_VERSIONS = {
 
 const BOOKS = [
 
-    { name: "Genesis", id: "genesis", chapters: 50, testament: "OT" },
-    { name: "Exodus", id: "exodus", chapters: 40, testament: "OT" },
-    { name: "Leviticus", id: "leviticus", chapters: 27, testament: "OT" },
-    { name: "Numbers", id: "numbers", chapters: 36, testament: "OT" },
-    { name: "Deuteronomy", id: "deuteronomy", chapters: 34, testament: "OT" },
-    { name: "Joshua", id: "joshua", chapters: 24, testament: "OT" },
-    { name: "Judges", id: "judges", chapters: 21, testament: "OT" },
-    { name: "Ruth", id: "ruth", chapters: 4, testament: "OT" },
-    { name: "1 Samuel", id: "1-samuel", chapters: 31, testament: "OT" },
-    { name: "2 Samuel", id: "2-samuel", chapters: 24, testament: "OT" },
-    { name: "1 Kings", id: "1-kings", chapters: 22, testament: "OT" },
-    { name: "2 Kings", id: "2-kings", chapters: 25, testament: "OT" },
-    { name: "1 Chronicles", id: "1-chronicles", chapters: 29, testament: "OT" },
-    { name: "2 Chronicles", id: "2-chronicles", chapters: 36, testament: "OT" },
-    { name: "Ezra", id: "ezra", chapters: 10, testament: "OT" },
-    { name: "Nehemiah", id: "nehemiah", chapters: 13, testament: "OT" },
-    { name: "Esther", id: "esther", chapters: 10, testament: "OT" },
-    { name: "Job", id: "job", chapters: 42, testament: "OT" },
-    { name: "Psalms", id: "psalms", chapters: 150, testament: "OT" },
-    { name: "Proverbs", id: "proverbs", chapters: 31, testament: "OT" },
-    { name: "Ecclesiastes", id: "ecclesiastes", chapters: 12, testament: "OT" },
-    { name: "Song of Solomon", id: "song", chapters: 8, testament: "OT" },
-    { name: "Isaiah", id: "isaiah", chapters: 66, testament: "OT" },
-    { name: "Jeremiah", id: "jeremiah", chapters: 52, testament: "OT" },
-    { name: "Lamentations", id: "lamentations", chapters: 5, testament: "OT" },
-    { name: "Ezekiel", id: "ezekiel", chapters: 48, testament: "OT" },
-    { name: "Daniel", id: "daniel", chapters: 12, testament: "OT" },
-    { name: "Hosea", id: "hosea", chapters: 14, testament: "OT" },
-    { name: "Joel", id: "joel", chapters: 3, testament: "OT" },
-    { name: "Amos", id: "amos", chapters: 9, testament: "OT" },
-    { name: "Obadiah", id: "obadiah", chapters: 1, testament: "OT" },
-    { name: "Jonah", id: "jonah", chapters: 4, testament: "OT" },
-    { name: "Micah", id: "micah", chapters: 7, testament: "OT" },
-    { name: "Nahum", id: "nahum", chapters: 3, testament: "OT" },
-    { name: "Habakkuk", id: "habakkuk", chapters: 3, testament: "OT" },
-    { name: "Zephaniah", id: "zephaniah", chapters: 3, testament: "OT" },
-    { name: "Haggai", id: "haggai", chapters: 2, testament: "OT" },
-    { name: "Zechariah", id: "zechariah", chapters: 14, testament: "OT" },
-    { name: "Malachi", id: "malachi", chapters: 4, testament: "OT" },
+    // OLD TESTAMENT
 
-    { name: "Matthew", id: "matthew", chapters: 28, testament: "NT" },
-    { name: "Mark", id: "mark", chapters: 16, testament: "NT" },
-    { name: "Luke", id: "luke", chapters: 24, testament: "NT" },
-    { name: "John", id: "john", chapters: 21, testament: "NT" },
-    { name: "Acts", id: "acts", chapters: 28, testament: "NT" },
-    { name: "Romans", id: "romans", chapters: 16, testament: "NT" },
-    { name: "1 Corinthians", id: "1-corinthians", chapters: 16, testament: "NT" },
-    { name: "2 Corinthians", id: "2-corinthians", chapters: 13, testament: "NT" },
-    { name: "Galatians", id: "galatians", chapters: 6, testament: "NT" },
-    { name: "Ephesians", id: "ephesians", chapters: 6, testament: "NT" },
-    { name: "Philippians", id: "philippians", chapters: 4, testament: "NT" },
-    { name: "Colossians", id: "colossians", chapters: 4, testament: "NT" },
-    { name: "1 Thessalonians", id: "1-thessalonians", chapters: 5, testament: "OT" },
-    { name: "2 Thessalonians", id: "2-thessalonians", chapters: 3, testament: "NT" },
-    { name: "1 Timothy", id: "1-timothy", chapters: 6, testament: "NT" },
-    { name: "2 Timothy", id: "2-timothy", chapters: 4, testament: "NT" },
-    { name: "Titus", id: "titus", chapters: 3, testament: "NT" },
-    { name: "Philemon", id: "philemon", chapters: 1, testament: "NT" },
-    { name: "Hebrews", id: "hebrews", chapters: 13, testament: "NT" },
-    { name: "James", id: "james", chapters: 5, testament: "NT" },
-    { name: "1 Peter", id: "1-peter", chapters: 5, testament: "NT" },
-    { name: "2 Peter", id: "2-peter", chapters: 3, testament: "NT" },
-    { name: "1 John", id: "1-john", chapters: 5, testament: "NT" },
-    { name: "2 John", id: "2-john", chapters: 1, testament: "NT" },
-    { name: "3 John", id: "3-john", chapters: 1, testament: "NT" },
-    { name: "Jude", id: "jude", chapters: 1, testament: "NT" },
-    { name: "Revelation", id: "revelation", chapters: 22, testament: "NT" }
+    { name: "Genesis", id: "Gen", chapters: 50, testament: "OT" },
+    { name: "Exodus", id: "Exod", chapters: 40, testament: "OT" },
+    { name: "Leviticus", id: "Lev", chapters: 27, testament: "OT" },
+    { name: "Numbers", id: "Num", chapters: 36, testament: "OT" },
+    { name: "Deuteronomy", id: "Deut", chapters: 34, testament: "OT" },
+    { name: "Joshua", id: "Josh", chapters: 24, testament: "OT" },
+    { name: "Judges", id: "Judg", chapters: 21, testament: "OT" },
+    { name: "Ruth", id: "Ruth", chapters: 4, testament: "OT" },
+    { name: "1 Samuel", id: "1Sam", chapters: 31, testament: "OT" },
+    { name: "2 Samuel", id: "2Sam", chapters: 24, testament: "OT" },
+    { name: "1 Kings", id: "1Kgs", chapters: 22, testament: "OT" },
+    { name: "2 Kings", id: "2Kgs", chapters: 25, testament: "OT" },
+    { name: "1 Chronicles", id: "1Chr", chapters: 29, testament: "OT" },
+    { name: "2 Chronicles", id: "2Chr", chapters: 36, testament: "OT" },
+    { name: "Ezra", id: "Ezra", chapters: 10, testament: "OT" },
+    { name: "Nehemiah", id: "Neh", chapters: 13, testament: "OT" },
+    { name: "Esther", id: "Esth", chapters: 10, testament: "OT" },
+    { name: "Job", id: "Job", chapters: 42, testament: "OT" },
+    { name: "Psalms", id: "Ps", chapters: 150, testament: "OT" },
+    { name: "Proverbs", id: "Prov", chapters: 31, testament: "OT" },
+    { name: "Ecclesiastes", id: "Eccl", chapters: 12, testament: "OT" },
+    { name: "Song of Solomon", id: "Song", chapters: 8, testament: "OT" },
+    { name: "Isaiah", id: "Isa", chapters: 66, testament: "OT" },
+    { name: "Jeremiah", id: "Jer", chapters: 52, testament: "OT" },
+    { name: "Lamentations", id: "Lam", chapters: 5, testament: "OT" },
+    { name: "Ezekiel", id: "Ezek", chapters: 48, testament: "OT" },
+    { name: "Daniel", id: "Dan", chapters: 12, testament: "OT" },
+    { name: "Hosea", id: "Hos", chapters: 14, testament: "OT" },
+    { name: "Joel", id: "Joel", chapters: 3, testament: "OT" },
+    { name: "Amos", id: "Amos", chapters: 9, testament: "OT" },
+    { name: "Obadiah", id: "Obad", chapters: 1, testament: "OT" },
+    { name: "Jonah", id: "Jonah", chapters: 4, testament: "OT" },
+    { name: "Micah", id: "Mic", chapters: 7, testament: "OT" },
+    { name: "Nahum", id: "Nah", chapters: 3, testament: "OT" },
+    { name: "Habakkuk", id: "Hab", chapters: 3, testament: "OT" },
+    { name: "Zephaniah", id: "Zeph", chapters: 3, testament: "OT" },
+    { name: "Haggai", id: "Hag", chapters: 2, testament: "OT" },
+    { name: "Zechariah", id: "Zech", chapters: 14, testament: "OT" },
+    { name: "Malachi", id: "Mal", chapters: 4, testament: "OT" },
+
+
+    // NEW TESTAMENT
+
+    { name: "Matthew", id: "Matt", chapters: 28, testament: "NT" },
+    { name: "Mark", id: "Mark", chapters: 16, testament: "NT" },
+    { name: "Luke", id: "Luke", chapters: 24, testament: "NT" },
+    { name: "John", id: "John", chapters: 21, testament: "NT" },
+    { name: "Acts", id: "Acts", chapters: 28, testament: "NT" },
+    { name: "Romans", id: "Rom", chapters: 16, testament: "NT" },
+    { name: "1 Corinthians", id: "1Cor", chapters: 16, testament: "NT" },
+    { name: "2 Corinthians", id: "2Cor", chapters: 13, testament: "NT" },
+    { name: "Galatians", id: "Gal", chapters: 6, testament: "NT" },
+    { name: "Ephesians", id: "Eph", chapters: 6, testament: "NT" },
+    { name: "Philippians", id: "Phil", chapters: 4, testament: "NT" },
+    { name: "Colossians", id: "Col", chapters: 4, testament: "NT" },
+    { name: "1 Thessalonians", id: "1Thess", chapters: 5, testament: "NT" },
+    { name: "2 Thessalonians", id: "2Thess", chapters: 3, testament: "NT" },
+    { name: "1 Timothy", id: "1Tim", chapters: 6, testament: "NT" },
+    { name: "2 Timothy", id: "2Tim", chapters: 4, testament: "NT" },
+    { name: "Titus", id: "Titus", chapters: 3, testament: "NT" },
+    { name: "Philemon", id: "Phlm", chapters: 1, testament: "NT" },
+    { name: "Hebrews", id: "Heb", chapters: 13, testament: "NT" },
+    { name: "James", id: "Jas", chapters: 5, testament: "NT" },
+    { name: "1 Peter", id: "1Pet", chapters: 5, testament: "NT" },
+    { name: "2 Peter", id: "2Pet", chapters: 3, testament: "NT" },
+    { name: "1 John", id: "1John", chapters: 5, testament: "NT" },
+    { name: "2 John", id: "2John", chapters: 1, testament: "NT" },
+    { name: "3 John", id: "3John", chapters: 1, testament: "NT" },
+    { name: "Jude", id: "Jude", chapters: 1, testament: "NT" },
+    { name: "Revelation", id: "Rev", chapters: 22, testament: "NT" }
+
 ];
 
 
 // ==========================================
-// CURRENT APP STATE
+// CURRENT POSITION
 // ==========================================
 
 let currentVersion = "kjv";
+
 let currentBook = BOOKS[0];
+
 let currentChapter = 1;
+
+
+// ==========================================
+// GET BIBLE BOOK URL
+// ==========================================
+
+function getBookURL() {
+
+    return (
+        "https://raw.githubusercontent.com/" +
+        "midvash/bible-data/main/versions/en/" +
+        currentVersion +
+        "/books/" +
+        currentBook.id +
+        ".json"
+    );
+
+}
 
 
 // ==========================================
@@ -128,54 +161,108 @@ let currentChapter = 1;
 
 async function loadChapter() {
 
-    const reader = document.getElementById("reader");
+    const reader =
+        document.getElementById("reader");
 
     if (!reader) return;
 
+
     reader.innerHTML = `
+
         <div class="loading">
+
             <div class="loading-spinner"></div>
-            <p>Loading Scripture...</p>
+
+            <p>
+                Loading Scripture...
+            </p>
+
         </div>
+
     `;
+
 
     try {
 
-        const url =
-            `${API_BASE}/${currentVersion}/${currentBook.id}/${currentChapter}`;
+        const response =
+            await fetch(getBookURL());
 
-        const response = await fetch(url);
 
         if (!response.ok) {
-            throw new Error("Unable to load chapter");
+
+            throw new Error(
+                "Unable to load Bible book."
+            );
+
         }
 
-        const result = await response.json();
 
-        const data = result.data || result;
+        const book =
+            await response.json();
 
-        displayChapter(data);
+
+        /*
+         * The dataset stores chapters
+         * in an array.
+         *
+         * Array positions start at 0,
+         * while Bible chapters start at 1.
+         *
+         * Therefore:
+         *
+         * Chapter 1 = chapters[0]
+         * Chapter 2 = chapters[1]
+         * etc.
+         */
+
+        const chapter =
+            book.chapters[currentChapter - 1];
+
+
+        if (!chapter) {
+
+            throw new Error(
+                "Chapter not found."
+            );
+
+        }
+
+
+        displayChapter(chapter);
+
 
     } catch (error) {
 
-        console.error("Bible API error:", error);
+        console.error(
+            "Bible loading error:",
+            error
+        );
+
 
         reader.innerHTML = `
+
             <div class="error-message">
-                <h3>Unable to load Scripture</h3>
+
+                <h3>
+                    Unable to load Scripture
+                </h3>
 
                 <p>
-                    We couldn't load this chapter.
-                    Please check your internet connection
-                    and try again.
+                    ${error.message}
                 </p>
 
-                <button onclick="loadChapter()">
+                <button
+                    onclick="loadChapter()"
+                >
                     Try Again
                 </button>
+
             </div>
+
         `;
+
     }
+
 }
 
 
@@ -183,152 +270,312 @@ async function loadChapter() {
 // DISPLAY CHAPTER
 // ==========================================
 
-function displayChapter(data) {
+function displayChapter(chapter) {
 
     const reader =
         document.getElementById("reader");
 
+
     reader.innerHTML = "";
+
+
+    // Chapter heading
 
     const title =
         document.createElement("div");
 
-    title.className = "chapter-title";
+    title.className =
+        "chapter-title";
+
 
     title.innerHTML = `
-        <span>${currentBook.name}</span>
-        <strong>Chapter ${currentChapter}</strong>
+
+        <span>
+            ${currentBook.name}
+        </span>
+
+        <strong>
+            Chapter ${currentChapter}
+        </strong>
+
     `;
+
 
     reader.appendChild(title);
 
 
-    if (!data || !data.verses) {
+    // Make sure verses exist
+
+    if (
+        !chapter ||
+        !Array.isArray(chapter.verses)
+    ) {
 
         reader.innerHTML += `
+
             <div class="error-message">
-                <h3>No verses found</h3>
+
+                <h3>
+                    No verses found
+                </h3>
+
                 <p>
-                    This chapter could not be displayed.
+                    This chapter contains
+                    no readable verse data.
                 </p>
+
             </div>
+
         `;
 
         return;
+
     }
 
 
-    data.verses.forEach(verse => {
+    // Display every verse
 
-        const verseElement =
-            document.createElement("div");
+    chapter.verses.forEach(
+        verse => {
 
-        verseElement.className = "verse-row";
+            const verseElement =
+                document.createElement("div");
 
-        verseElement.innerHTML = `
-            <span class="verse-number">
-                ${verse.number}
-            </span>
 
-            <span class="verse-text">
-                ${verse.text}
-            </span>
-        `;
+            verseElement.className =
+                "verse-row";
 
-        reader.appendChild(verseElement);
-    });
+
+            verseElement.innerHTML = `
+
+                <span class="verse-number">
+                    ${verse.number}
+                </span>
+
+                <span class="verse-text">
+                    ${verse.text}
+                </span>
+
+            `;
+
+
+            reader.appendChild(
+                verseElement
+            );
+
+        }
+    );
 
 
     updateNavigation();
+
 }
 
 
 // ==========================================
-// POPULATE BOOKS
+// VERSION SELECTOR
+// ==========================================
+
+function populateVersions() {
+
+    const select =
+        document.getElementById(
+            "versionSelect"
+        );
+
+
+    if (!select) return;
+
+
+    select.innerHTML = "";
+
+
+    Object.entries(
+        BIBLE_VERSIONS
+    ).forEach(
+        ([id, version]) => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value = id;
+
+
+            option.textContent =
+                `${version.shortName} — ${version.name}`;
+
+
+            if (
+                id === currentVersion
+            ) {
+
+                option.selected = true;
+
+            }
+
+
+            select.appendChild(
+                option
+            );
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// BOOK SELECTOR
 // ==========================================
 
 function populateBooks() {
 
-    const bookSelect =
-        document.getElementById("bookSelect");
+    const select =
+        document.getElementById(
+            "bookSelect"
+        );
 
-    if (!bookSelect) return;
 
-    bookSelect.innerHTML = "";
+    if (!select) return;
+
+
+    select.innerHTML = "";
 
 
     const oldTestament =
-        document.createElement("optgroup");
+        document.createElement(
+            "optgroup"
+        );
+
 
     oldTestament.label =
         "Old Testament";
 
 
     BOOKS
-        .filter(book => book.testament === "OT")
-        .forEach(book => {
+        .filter(
+            book =>
+                book.testament === "OT"
+        )
+        .forEach(
+            book => {
 
-            const option =
-                document.createElement("option");
+                const option =
+                    document.createElement(
+                        "option"
+                    );
 
-            option.value = book.id;
 
-            option.textContent = book.name;
+                option.value =
+                    book.id;
 
-            if (book.id === currentBook.id) {
-                option.selected = true;
+
+                option.textContent =
+                    book.name;
+
+
+                if (
+                    book.id ===
+                    currentBook.id
+                ) {
+
+                    option.selected = true;
+
+                }
+
+
+                oldTestament.appendChild(
+                    option
+                );
+
             }
-
-            oldTestament.appendChild(option);
-        });
+        );
 
 
     const newTestament =
-        document.createElement("optgroup");
+        document.createElement(
+            "optgroup"
+        );
+
 
     newTestament.label =
         "New Testament";
 
 
     BOOKS
-        .filter(book => book.testament === "NT")
-        .forEach(book => {
+        .filter(
+            book =>
+                book.testament === "NT"
+        )
+        .forEach(
+            book => {
 
-            const option =
-                document.createElement("option");
+                const option =
+                    document.createElement(
+                        "option"
+                    );
 
-            option.value = book.id;
 
-            option.textContent = book.name;
+                option.value =
+                    book.id;
 
-            if (book.id === currentBook.id) {
-                option.selected = true;
+
+                option.textContent =
+                    book.name;
+
+
+                if (
+                    book.id ===
+                    currentBook.id
+                ) {
+
+                    option.selected = true;
+
+                }
+
+
+                newTestament.appendChild(
+                    option
+                );
+
             }
-
-            newTestament.appendChild(option);
-        });
+        );
 
 
-    bookSelect.appendChild(oldTestament);
+    select.appendChild(
+        oldTestament
+    );
 
-    bookSelect.appendChild(newTestament);
+
+    select.appendChild(
+        newTestament
+    );
+
 
     populateChapters();
+
 }
 
 
 // ==========================================
-// POPULATE CHAPTERS
+// CHAPTER SELECTOR
 // ==========================================
 
 function populateChapters() {
 
-    const chapterSelect =
-        document.getElementById("chapterSelect");
+    const select =
+        document.getElementById(
+            "chapterSelect"
+        );
 
-    if (!chapterSelect) return;
 
-    chapterSelect.innerHTML = "";
+    if (!select) return;
+
+
+    select.innerHTML = "";
 
 
     for (
@@ -338,92 +585,77 @@ function populateChapters() {
     ) {
 
         const option =
-            document.createElement("option");
+            document.createElement(
+                "option"
+            );
+
 
         option.value = i;
+
 
         option.textContent =
             `Chapter ${i}`;
 
-        if (i === currentChapter) {
+
+        if (
+            i === currentChapter
+        ) {
+
             option.selected = true;
+
         }
 
-        chapterSelect.appendChild(option);
+
+        select.appendChild(
+            option
+        );
+
     }
+
 }
 
 
 // ==========================================
-// POPULATE VERSIONS
-// ==========================================
-
-function populateVersions() {
-
-    const versionSelect =
-        document.getElementById("versionSelect");
-
-    if (!versionSelect) return;
-
-    versionSelect.innerHTML = "";
-
-
-    Object.entries(BIBLE_VERSIONS)
-        .forEach(([id, version]) => {
-
-            const option =
-                document.createElement("option");
-
-            option.value = id;
-
-            option.textContent =
-                `${version.shortName} — ${version.name}`;
-
-            if (id === currentVersion) {
-                option.selected = true;
-            }
-
-            versionSelect.appendChild(option);
-        });
-}
-
-
-// ==========================================
-// NAVIGATION
+// NAVIGATION BUTTONS
 // ==========================================
 
 function updateNavigation() {
 
-    const previousButton =
+    const previous =
         document.getElementById(
             "previousChapter"
         );
 
-    const nextButton =
+
+    const next =
         document.getElementById(
             "nextChapter"
         );
 
-    if (!previousButton || !nextButton) {
-        return;
-    }
+
+    if (!previous || !next) return;
 
 
     const firstBook =
         BOOKS[0];
 
+
     const lastBook =
-        BOOKS[BOOKS.length - 1];
+        BOOKS[
+            BOOKS.length - 1
+        ];
 
 
-    previousButton.disabled =
+    previous.disabled =
         currentBook === firstBook &&
         currentChapter === 1;
 
 
-    nextButton.disabled =
+    next.disabled =
         currentBook === lastBook &&
-        currentChapter === currentBook.chapters;
+        currentChapter ===
+        currentBook.chapters;
+
 }
 
 
@@ -440,7 +672,10 @@ function previousChapter() {
     } else {
 
         const index =
-            BOOKS.indexOf(currentBook);
+            BOOKS.indexOf(
+                currentBook
+            );
+
 
         if (index > 0) {
 
@@ -449,12 +684,16 @@ function previousChapter() {
 
             currentChapter =
                 currentBook.chapters;
+
         }
+
     }
+
 
     populateBooks();
 
     loadChapter();
+
 }
 
 
@@ -474,7 +713,10 @@ function nextChapter() {
     } else {
 
         const index =
-            BOOKS.indexOf(currentBook);
+            BOOKS.indexOf(
+                currentBook
+            );
+
 
         if (
             index <
@@ -485,17 +727,21 @@ function nextChapter() {
                 BOOKS[index + 1];
 
             currentChapter = 1;
+
         }
+
     }
+
 
     populateBooks();
 
     loadChapter();
+
 }
 
 
 // ==========================================
-// EVENT LISTENERS
+// START APP
 // ==========================================
 
 document.addEventListener(
@@ -509,8 +755,12 @@ document.addEventListener(
         loadChapter();
 
 
+        // Version changed
+
         document
-            .getElementById("versionSelect")
+            .getElementById(
+                "versionSelect"
+            )
             ?.addEventListener(
                 "change",
                 event => {
@@ -519,12 +769,17 @@ document.addEventListener(
                         event.target.value;
 
                     loadChapter();
+
                 }
             );
 
 
+        // Book changed
+
         document
-            .getElementById("bookSelect")
+            .getElementById(
+                "bookSelect"
+            )
             ?.addEventListener(
                 "change",
                 event => {
@@ -536,24 +791,32 @@ document.addEventListener(
                                 event.target.value
                         );
 
-                    if (!selectedBook) {
+
+                    if (!selectedBook)
                         return;
-                    }
+
 
                     currentBook =
                         selectedBook;
 
+
                     currentChapter = 1;
+
 
                     populateChapters();
 
                     loadChapter();
+
                 }
             );
 
 
+        // Chapter changed
+
         document
-            .getElementById("chapterSelect")
+            .getElementById(
+                "chapterSelect"
+            )
             ?.addEventListener(
                 "change",
                 event => {
@@ -563,24 +826,35 @@ document.addEventListener(
                             event.target.value
                         );
 
+
                     loadChapter();
+
                 }
             );
 
 
+        // Previous
+
         document
-            .getElementById("previousChapter")
+            .getElementById(
+                "previousChapter"
+            )
             ?.addEventListener(
                 "click",
                 previousChapter
             );
 
 
+        // Next
+
         document
-            .getElementById("nextChapter")
+            .getElementById(
+                "nextChapter"
+            )
             ?.addEventListener(
                 "click",
                 nextChapter
             );
+
     }
 );
