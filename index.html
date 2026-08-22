@@ -1,174 +1,258 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Bible App</title>
 
-    <meta name="theme-color" content="#172554">
+    <meta
+        name="description"
+        content="A Bible reading app with multiple Bible versions."
+    >
 
-    <link rel="manifest" href="manifest.json">
+    <meta
+        name="theme-color"
+        content="#172554"
+    >
 
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+    <link
+        rel="manifest"
+        href="./manifest.json"
+    >
 
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f7fb;
-            color: #172033;
-        }
+    <link
+        rel="stylesheet"
+        href="./style.css"
+    >
 
-        header {
-            background: linear-gradient(135deg, #172554, #2563eb);
-            color: white;
-            padding: 30px 20px;
-            text-align: center;
-        }
-
-        header h1 {
-            font-size: 32px;
-            margin-bottom: 8px;
-        }
-
-        header p {
-            opacity: 0.9;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: auto;
-            padding: 20px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 18px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-        }
-
-        .card h2 {
-            margin-bottom: 10px;
-            color: #172554;
-        }
-
-        .version-select {
-            width: 100%;
-            padding: 14px;
-            border-radius: 10px;
-            border: 1px solid #d1d5db;
-            font-size: 16px;
-            margin-top: 10px;
-        }
-
-        .buttons {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 12px;
-            margin-top: 20px;
-        }
-
-        button {
-            border: none;
-            padding: 15px;
-            border-radius: 12px;
-            background: #2563eb;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #1d4ed8;
-        }
-
-        .verse {
-            line-height: 1.8;
-            font-size: 18px;
-            margin-top: 15px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px;
-            color: #6b7280;
-        }
-    </style>
 </head>
+
 
 <body>
 
-    <header>
-        <h1>📖 Bible App</h1>
-        <p>Grow in Grace & Truth</p>
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <header class="app-header">
+
+        <div class="header-inner">
+
+            <div class="logo">
+
+                <div class="logo-icon">
+                    📖
+                </div>
+
+                <div>
+
+                    <h1>Bible App</h1>
+
+                    <p>
+                        Grow in Grace & Truth
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </header>
+
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================== -->
 
     <main class="container">
 
-        <section class="card">
-            <h2>Choose Bible Version</h2>
 
-            <select class="version-select">
-                <option>KJV — King James Version</option>
-                <option>WEB — World English Bible</option>
-                <option>ASV — American Standard Version</option>
-            </select>
-        </section>
+        <!-- =========================
+             BIBLE CONTROLS
+        ========================== -->
 
-        <section class="card">
-            <h2>Welcome</h2>
+        <section class="controls">
 
-            <p>
-                Welcome to your Bible app. Choose a Bible version,
-                explore the Scriptures, search for verses, and grow
-                in God's Word.
-            </p>
+            <div class="control-grid">
 
-            <div class="buttons">
-                <button>📖 Read Bible</button>
-                <button>🔎 Search</button>
-                <button>⭐ Bookmarks</button>
-                <button>⚙️ Settings</button>
+
+                <!-- VERSION -->
+
+                <div class="control-group">
+
+                    <label for="versionSelect">
+                        Bible Version
+                    </label>
+
+                    <select
+                        id="versionSelect"
+                    ></select>
+
+                </div>
+
+
+
+                <!-- BOOK -->
+
+                <div class="control-group">
+
+                    <label for="bookSelect">
+                        Book
+                    </label>
+
+                    <select
+                        id="bookSelect"
+                    ></select>
+
+                </div>
+
+
+
+                <!-- CHAPTER -->
+
+                <div class="control-group">
+
+                    <label for="chapterSelect">
+                        Chapter
+                    </label>
+
+                    <select
+                        id="chapterSelect"
+                    ></select>
+
+                </div>
+
+
             </div>
+
         </section>
 
-        <section class="card">
-            <h2>Verse of the Day</h2>
 
-            <p class="verse">
-                "Thy word is a lamp unto my feet, and a light unto my path."
-            </p>
 
-            <p style="margin-top: 10px;">
-                — Psalm 119:105
-            </p>
+        <!-- =========================
+             BIBLE READER
+        ========================== -->
+
+        <section
+            id="reader"
+            class="reader"
+        >
+
+            <div class="loading">
+
+                <div class="loading-spinner"></div>
+
+                <p>
+                    Loading Scripture...
+                </p>
+
+            </div>
+
         </section>
+
+
+
+        <!-- =========================
+             CHAPTER NAVIGATION
+        ========================== -->
+
+        <div class="navigation">
+
+            <button
+                id="previousChapter"
+            >
+                ← Previous
+            </button>
+
+
+            <button
+                id="nextChapter"
+            >
+                Next →
+            </button>
+
+        </div>
+
 
     </main>
 
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
     <footer>
-        Bible App • Grow in Grace & Truth
+
+        <p>
+            Bible App • Grow in Grace & Truth
+        </p>
+
+        <p style="margin-top: 6px;">
+            Scripture reader
+        </p>
+
     </footer>
 
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+    <script src="./app.js"></script>
+
+
+    <!-- =========================
+         SERVICE WORKER
+    ========================== -->
+
     <script>
+
         if ("serviceWorker" in navigator) {
-            window.addEventListener("load", () => {
-                navigator.serviceWorker.register("./service-worker.js")
-                    .then(() => {
-                        console.log("Service Worker registered successfully.");
-                    })
-                    .catch(error => {
-                        console.error("Service Worker registration failed:", error);
-                    });
-            });
+
+            window.addEventListener(
+                "load",
+                () => {
+
+                    navigator.serviceWorker
+                        .register(
+                            "./service-worker.js"
+                        )
+                        .then(() => {
+
+                            console.log(
+                                "Service Worker registered."
+                            );
+
+                        })
+                        .catch(error => {
+
+                            console.error(
+                                "Service Worker registration failed:",
+                                error
+                            );
+
+                        });
+
+                }
+            );
+
         }
+
     </script>
 
+
 </body>
+
 </html>
