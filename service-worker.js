@@ -8,7 +8,7 @@
  * Bump CACHE_NAME whenever the app shell changes so old caches get replaced.
  */
 
-const CACHE_NAME = 'bible-app-v5';
+const CACHE_NAME = 'bible-app-v6';
 
 const APP_SHELL = [
   './',
