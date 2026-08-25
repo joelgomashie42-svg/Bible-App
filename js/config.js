@@ -10,4 +10,4 @@
  * button won't appear).
  */
 
-const AI_ASSISTANT_ENDPOINT = null;
+const AI_ASSISTANT_ENDPOINT = 'https://bible-app-assistant.joelgomashie42.workers.dev/';
